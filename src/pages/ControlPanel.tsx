@@ -116,7 +116,7 @@ const Reference = styled.div`
 
 function ControlPanel() {
   const [books, setBooks] = useState<Book[]>([]);
-  const [selectedBook, setSelectedBook] = useState<number>(0);
+  const [selectedBook, setSelectedBook] = useState<number>(-1);
   const [chapters, setChapters] = useState<number[]>([]);
   const [selectedChapter, setSelectedChapter] = useState<number>(1);
   const [verses, setVerses] = useState<Verse[]>([]);
@@ -124,39 +124,51 @@ function ControlPanel() {
 
   // Carregar livros ao iniciar
   useEffect(() => {
-    console.log('Carregando livros...');
     fetch('http://localhost:3001/api/books')
       .then(res => res.json())
       .then(data => {
-        console.log('Livros carregados:', data);
         setBooks(data);
       })
       .catch(error => console.error('Erro ao carregar livros:', error));
   }, []);
 
-  // Carregar capítulos quando um livro é selecionado
-  useEffect(() => {
-    if (selectedBook) {
-      console.log('Carregando capítulos do livro:', selectedBook);
-      fetch(`http://localhost:3001/api/books/${selectedBook}/chapters`)
-        .then(res => res.json())
-        .then(data => {
-          console.log('Capítulos carregados:', data);
-          setChapters(data);
-          setSelectedChapter(1);
+  const handleBookChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = Number(e.target.value);
+    setSelectedBook(value);
+    
+    if (value >= 0) {
+      fetch(`http://localhost:3001/api/books/${value}/chapters`)
+        .then(res => {
+          if (!res.ok) {
+            throw new Error(`HTTP error! status: ${res.status}`);
+          }
+          return res.json();
         })
-        .catch(error => console.error('Erro ao carregar capítulos:', error));
+        .then(data => {
+          setChapters(data);
+          if (data && data.length > 0) {
+            setSelectedChapter(1);
+          }
+        })
+        .catch(error => {
+          console.error('Erro ao carregar capítulos:', error);
+          setChapters([]);
+          setSelectedChapter(1);
+        });
+    } else {
+      setChapters([]);
+      setSelectedChapter(1);
+      setVerses([]);
+      setSelectedVerse(null);
     }
-  }, [selectedBook]);
+  };
 
   // Carregar versículos quando um capítulo é selecionado
   useEffect(() => {
-    if (selectedBook && selectedChapter) {
-      console.log('Carregando versículos do capítulo:', selectedChapter);
+    if (selectedBook >= 0 && selectedChapter) {
       fetch(`http://localhost:3001/api/books/${selectedBook}/chapters/${selectedChapter}/verses`)
         .then(res => res.json())
         .then(data => {
-          console.log('Versículos carregados:', data);
           setVerses(data);
           setSelectedVerse(data[0] || null);
         })
@@ -187,9 +199,9 @@ function ControlPanel() {
       <Controls>
         <Select 
           value={selectedBook} 
-          onChange={(e) => setSelectedBook(Number(e.target.value))}
+          onChange={handleBookChange}
         >
-          <option value={0}>Selecione o Livro</option>
+          <option value={-1}>Selecione o Livro</option>
           {books.map(book => (
             <option key={book.id} value={book.id}>
               {book.name}
@@ -200,7 +212,7 @@ function ControlPanel() {
         <Select 
           value={selectedChapter}
           onChange={(e) => setSelectedChapter(Number(e.target.value))}
-          disabled={!selectedBook}
+          disabled={selectedBook === -1}
         >
           <option value={0}>Selecione o Capítulo</option>
           {chapters.map(chapter => (
@@ -216,7 +228,7 @@ function ControlPanel() {
             const verse = verses.find(v => v.verse === Number(e.target.value));
             setSelectedVerse(verse || null);
           }}
-          disabled={!selectedChapter}
+          disabled={selectedBook === -1 || !selectedChapter}
         >
           <option value={0}>Selecione o Versículo</option>
           {verses.map(verse => (

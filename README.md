@@ -2,6 +2,14 @@
 
 Sistema web para projeção de versículos bíblicos em igrejas, desenvolvido com React, Node.js e MySQL.
 
+## 📸 Screenshots
+
+### Painel de Controle
+![Painel de Controle](https://i.imgur.com/VYG3CnC.png)
+
+### Tela de Projeção
+![Tela de Projeção](https://i.imgur.com/K5e5g3P.png)
+
 ## ✨ Características
 
 - 🎯 Interface simples e intuitiva
@@ -118,52 +126,3 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 ```
-
-### Portas
-- Frontend: 3000
-- Backend: 3001
-
-## 🔧 Desenvolvimento
-
-Para contribuir com o projeto:
-
-1. Crie um fork
-2. Crie uma branch para sua feature (`git checkout -b feature/nome`)
-3. Commit suas mudanças (`git commit -m 'Adiciona feature'`)
-4. Push para a branch (`git push origin feature/nome`)
-5. Abra um Pull Request
-
-## 📝 Notas
-
-- O sistema usa a versão NVI da Bíblia
-- O modo tela cheia funciona melhor em navegadores modernos
-- Recomendado usar Chrome ou Firefox para melhor compatibilidade
-
-## 🐛 Problemas Conhecidos
-
-- O modo tela cheia pode precisar de permissão do usuário em alguns navegadores
-- Alguns navegadores podem bloquear a entrada automática em tela cheia
-
-## 🤝 Contribuindo
-
-Contribuições são sempre bem-vindas! Sinta-se à vontade para:
-
-- 🐛 Reportar bugs
-- 💡 Sugerir novas features
-- 📝 Melhorar a documentação
-- 👨‍💻 Submeter PRs
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
-
-## 👤 Autor
-
-Seu Nome
-- GitHub: [@IsraelSilva99](https://github.com/IsraelSilva99)
-- LinkedIn: [Israel Silva](https://www.linkedin.com/in/israelsilva99/)
-
-## 🙏 Agradecimentos
-
-- Sociedade Bíblica Internacional pela versão NVI
-- Comunidade open source pelas ferramentas utilizadas 

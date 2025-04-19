@@ -42,7 +42,7 @@ Sistema web para projeção de versículos bíblicos em igrejas, desenvolvido co
 
 1. **Clone o repositório:**
    ```bash
-   git clone https://github.com/seu-usuario/biblia-online.git
+   git clone https://github.com/IsraelSilva99/biblia-online
    cd biblia-online
    ```
 
